@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    include :
+      - oauth
+  application:
+    name: radial-api
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;NON_KEYWORDS=USER // USER ??? ??
+    username: sa
+    password: 1234
+
+jwt:
+  secret-key: dGlnaHRzaGFsbHNob3RhcnJhbmdlc2lzdGVybWF5YmVlYXJ0aHZpZXdmbG93c3BlYWs=
+
