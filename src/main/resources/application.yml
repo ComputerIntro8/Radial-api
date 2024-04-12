@@ -1,7 +1,20 @@
+springdoc:
+  packages-to-scan:
+    - com.example.radialapi
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+
+
 spring:
   profiles:
     include :
       - oauth
+      - dev
   application:
     name: radial-api
 
@@ -15,6 +28,5 @@ spring:
     username: sa
     password: 1234
 
-jwt:
-  secret-key: dGlnaHRzaGFsbHNob3RhcnJhbmdlc2lzdGVybWF5YmVlYXJ0aHZpZXdmbG93c3BlYWs=
+
 

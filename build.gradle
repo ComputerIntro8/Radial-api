@@ -36,6 +36,23 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
+    // Swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2")
+
+
+
+    // 웹 크롤링 Jsoup
+    implementation 'org.jsoup:jsoup:1.17.2'
+    // Selenium
+    implementation 'org.seleniumhq.selenium:selenium-java:4.19.1'
+// WebDriverManager, WebDriver 경로 설정 자동화
+    implementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
+// Apache HttpClient 의존성 추가
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
+    implementation 'org.apache.httpcomponents.core5:httpcore5:5.2.4'
+    implementation 'org.apache.httpcomponents.core5:httpcore5-h2:5.2.4'
+
+
     compileOnly 'org.projectlombok:lombok'
 
     runtimeOnly 'com.h2database:h2'
