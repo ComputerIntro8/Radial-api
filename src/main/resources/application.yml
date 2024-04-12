@@ -13,7 +13,6 @@ springdoc:
 spring:
   profiles:
     include :
-      - oauth
       - dev
   application:
     name: radial-api
