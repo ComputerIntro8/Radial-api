@@ -1,0 +1,31 @@
+springdoc:
+  packages-to-scan:
+    - com.example.radialapi
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
+
+
+spring:
+  profiles:
+    include :
+      - dev
+  application:
+    name: radial-api
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;NON_KEYWORDS=USER // USER ??? ??
+    username: sa
+    password: 1234
+
+
+
