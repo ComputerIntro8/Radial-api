@@ -28,7 +28,7 @@ public class SurveyController {
 
     // 문제 시작(요청) -> 문제 + 보기 데이터 반환
     @Operation(summary = "문제정보 요청", description = "문제DB에서 문제+답 가져와서 전달")
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<List<AnswerQuestionDto>> getQuiz(){
         List<AnswerQuestionDto> answerQuestionData = surveyService.getAnswerQuestion();
         return ResponseEntity.ok().body(answerQuestionData);

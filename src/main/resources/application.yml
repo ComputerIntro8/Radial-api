@@ -28,4 +28,7 @@ spring:
     password: 1234
 
 
-
+logging:
+  level:
+    root: INFO
+    com.example.radialapi: INFO

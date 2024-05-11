@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test Page</title>
+</head>
+<body>
+<h1>API Test for Quiz and Survey</h1>
+<button id="loadQuestions">Load Questions</button>
+<div id="questionsContainer"></div>
+<button id="submitResults">Submit Results</button>
+
+<script>
+    document.getElementById('loadQuestions').addEventListener('click', function() {
+        fetch('http://localhost:8080/') // Adjust the URL based on your actual server configuration
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('questionsContainer');
+                container.innerHTML = '';
+                data.forEach(question => {
+                    container.innerHTML += `<div>${question.questionText} - ${question.answer}</div>`;
+                });
+            })
+            .catch(error => console.error('Failed to load questions:', error));
+    });
+
+    document.getElementById('submitResults').addEventListener('click', function() {
+        const resultsData = {
+            // Populate with the actual result data structure expected by your backend
+            userId: 1, // Example user ID, replace with actual data as needed
+            answers: [
+                { questionId: 1, answer: 'Yes' },
+                { questionId: 2, answer: 'No' }
+            ],
+            timeTaken: 120,
+            correctAnswersCount: 1
+        };
+
+        fetch('http://localhost:8080/save/1', { // Replace '1' with the actual userId and adjust the URL as needed
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(resultsData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Failed to submit survey results');
+            })
+            .then(data => console.log('Success:', data))
+            .catch(error => console.error('Error:', error));
+    });
+</script>
+</body>
+</html>

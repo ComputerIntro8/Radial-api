@@ -2,15 +2,13 @@ package com.example.radialapi.survey.domain;
 
 import com.example.radialapi.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString
 public class SurveyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

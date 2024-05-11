@@ -10,12 +10,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Question {
 
     @Id
@@ -25,7 +27,7 @@ public class Question {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String questionText;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime time; // 시간
 
     @Column(nullable = false)
