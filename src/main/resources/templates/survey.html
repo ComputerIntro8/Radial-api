@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그래프 이해도 설문조사</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vw;
+        }
+    </style>
+</head>
+<body>
+<div style="font-size: 14pt;" id="question_text">
+    질문 1. 다음 그래프는 서울역의 평일 지하철 혼잡도 그래프 입니다. 가장 많은 배차가 필요한 시간대는 언제 입니까?
+</div>
+<script>
+    let seoul_2020 = {
+        "label": "2020",
+        "data": [
+            {
+                "value": 9.0,
+                "created_at": "2020-01-01 05:30:00"
+            },
+            {
+                "value": 8.9,
+                "created_at": "2020-01-01 06:00:00"
+            },
+            {
+                "value": 10.6,
+                "created_at": "2020-01-01 06:30:00"
+            },
+            {
+                "value": 16.0,
+                "created_at": "2020-01-01 07:00:00"
+            },
+            {
+                "value": 28.7,
+                "created_at": "2020-01-01 07:30:00"
+            },
+            {
+                "value": 27.4,
+                "created_at": "2020-01-01 08:00:00"
+            },
+            {
+                "value": 20.4,
+                "created_at": "2020-01-01 08:30:00"
+            },
+            {
+                "value": 17.5,
+                "created_at": "2020-01-01 09:00:00"
+            },
+            {
+                "value": 12.3,
+                "created_at": "2020-01-01 09:30:00"
+            },
+            {
+                "value": 12.2,
+                "created_at": "2020-01-01 10:00:00"
+            },
+            {
+                "value": 11.2,
+                "created_at": "2020-01-01 10:30:00"
+            },
+            {
+                "value": 13.6,
+                "created_at": "2020-01-01 11:00:00"
+            },
+            {
+                "value": 13.4,
+                "created_at": "2020-01-01 11:30:00"
+            },
+            {
+                "value": 16.9,
+                "created_at": "2020-01-01 12:00:00"
+            },
+            {
+                "value": 17.9,
+                "created_at": "2020-01-01 12:30:00"
+            },
+            {
+                "value": 19.1,
+                "created_at": "2020-01-01 13:00:00"
+            },
+            {
+                "value": 19.7,
+                "created_at": "2020-01-01 13:30:00"
+            },
+            {
+                "value": 22.3,
+                "created_at": "2020-01-01 14:00:00"
+            },
+            {
+                "value": 23.4,
+                "created_at": "2020-01-01 14:30:00"
+            },
+            {
+                "value": 26.9,
+                "created_at": "2020-01-01 15:00:00"
+            },
+            {
+                "value": 21.7,
+                "created_at": "2020-01-01 15:30:00"
+            },
+            {
+                "value": 29.4,
+                "created_at": "2020-01-01 16:00:00"
+            },
+            {
+                "value": 29.2,
+                "created_at": "2020-01-01 16:30:00"
+            },
+            {
+                "value": 44.3,
+                "created_at": "2020-01-01 17:00:00"
+            },
+            {
+                "value": 48.2,
+                "created_at": "2020-01-01 17:30:00"
+            },
+            {
+                "value": 80.9,
+                "created_at": "2020-01-01 18:00:00"
+            },
+            {
+                "value": 53.2,
+                "created_at": "2020-01-01 18:30:00"
+            },
+            {
+                "value": 41.4,
+                "created_at": "2020-01-01 19:00:00"
+            },
+            {
+                "value": 29.0,
+                "created_at": "2020-01-01 19:30:00"
+            },
+            {
+                "value": 26.3,
+                "created_at": "2020-01-01 20:00:00"
+            },
+            {
+                "value": 20.4,
+                "created_at": "2020-01-01 20:30:00"
+            },
+            {
+                "value": 31.1,
+                "created_at": "2020-01-01 21:00:00"
+            },
+            {
+                "value": 19.5,
+                "created_at": "2020-01-01 21:30:00"
+            },
+            {
+                "value": 18.4,
+                "created_at": "2020-01-01 22:00:00"
+            },
+            {
+                "value": 12.7,
+                "created_at": "2020-01-01 22:30:00"
+            },
+            {
+                "value": 11.8,
+                "created_at": "2020-01-01 23:00:00"
+            },
+            {
+                "value": 6.8,
+                "created_at": "2020-01-01 23:30:00"
+            }
+        ]
+    }
+    let seoul_2021 = {
+        "label": "2021",
+        "data": [
+            {
+                "value": 9.1,
+                "created_at": "2021-01-01 05:30:00"
+            },
+            {
+                "value": 8.6,
+                "created_at": "2021-01-01 06:00:00"
+            },
+            {
+                "value": 9.3,
+                "created_at": "2021-01-01 06:30:00"
+            },
+            {
+                "value": 15.2,
+                "created_at": "2021-01-01 07:00:00"
+            },
+            {
+                "value": 29.3,
+                "created_at": "2021-01-01 07:30:00"
+            },
+            {
+                "value": 27.7,
+                "created_at": "2021-01-01 08:00:00"
+            },
+            {
+                "value": 19.0,
+                "created_at": "2021-01-01 08:30:00"
+            },
+            {
+                "value": 18.5,
+                "created_at": "2021-01-01 09:00:00"
+            },
+            {
+                "value": 15.1,
+                "created_at": "2021-01-01 09:30:00"
+            },
+            {
+                "value": 13.9,
+                "created_at": "2021-01-01 10:00:00"
+            },
+            {
+                "value": 15.2,
+                "created_at": "2021-01-01 10:30:00"
+            },
+            {
+                "value": 14.6,
+                "created_at": "2021-01-01 11:00:00"
+            },
+            {
+                "value": 14.2,
+                "created_at": "2021-01-01 11:30:00"
+            },
+            {
+                "value": 17.6,
+                "created_at": "2021-01-01 12:00:00"
+            },
+            {
+                "value": 19.6,
+                "created_at": "2021-01-01 12:30:00"
+            },
+            {
+                "value": 20.3,
+                "created_at": "2021-01-01 13:00:00"
+            },
+            {
+                "value": 20.5,
+                "created_at": "2021-01-01 13:30:00"
+            },
+            {
+                "value": 25.4,
+                "created_at": "2021-01-01 14:00:00"
+            },
+            {
+                "value": 22.0,
+                "created_at": "2021-01-01 14:30:00"
+            },
+            {
+                "value": 30.1,
+                "created_at": "2021-01-01 15:00:00"
+            },
+            {
+                "value": 24.4,
+                "created_at": "2021-01-01 15:30:00"
+            },
+            {
+                "value": 33.8,
+                "created_at": "2021-01-01 16:00:00"
+            },
+            {
+                "value": 36.7,
+                "created_at": "2021-01-01 16:30:00"
+            },
+            {
+                "value": 43.8,
+                "created_at": "2021-01-01 17:00:00"
+            },
+            {
+                "value": 49.7,
+                "created_at": "2021-01-01 17:30:00"
+            },
+            {
+                "value": 84.0,
+                "created_at": "2021-01-01 18:00:00"
+            },
+            {
+                "value": 65.1,
+                "created_at": "2021-01-01 18:30:00"
+            },
+            {
+                "value": 37.5,
+                "created_at": "2021-01-01 19:00:00"
+            },
+            {
+                "value": 26.5,
+                "created_at": "2021-01-01 19:30:00"
+            },
+            {
+                "value": 25.5,
+                "created_at": "2021-01-01 20:00:00"
+            },
+            {
+                "value": 26.4,
+                "created_at": "2021-01-01 20:30:00"
+            },
+            {
+                "value": 26.3,
+                "created_at": "2021-01-01 21:00:00"
+            },
+            {
+                "value": 21.1,
+                "created_at": "2021-01-01 21:30:00"
+            },
+            {
+                "value": 32.1,
+                "created_at": "2021-01-01 22:00:00"
+            },
+            {
+                "value": 20.3,
+                "created_at": "2021-01-01 22:30:00"
+            },
+            {
+                "value": 12.6,
+                "created_at": "2021-01-01 23:00:00"
+            },
+            {
+                "value": 10.3,
+                "created_at": "2021-01-01 23:30:00"
+            }
+        ]
+    }
+    let seoul_2022 = {
+        "label": "2022",
+        "data": [
+            {
+                "value": 11.5,
+                "created_at": "2022-01-01 05:30:00"
+            },
+            {
+                "value": 11.0,
+                "created_at": "2022-01-01 06:00:00"
+            },
+            {
+                "value": 13.2,
+                "created_at": "2022-01-01 06:30:00"
+            },
+            {
+                "value": 21.4,
+                "created_at": "2022-01-01 07:00:00"
+            },
+            {
+                "value": 38.0,
+                "created_at": "2022-01-01 07:30:00"
+            },
+            {
+                "value": 38.7,
+                "created_at": "2022-01-01 08:00:00"
+            },
+            {
+                "value": 24.6,
+                "created_at": "2022-01-01 08:30:00"
+            },
+            {
+                "value": 24.0,
+                "created_at": "2022-01-01 09:00:00"
+            },
+            {
+                "value": 19.8,
+                "created_at": "2022-01-01 09:30:00"
+            },
+            {
+                "value": 18.8,
+                "created_at": "2022-01-01 10:00:00"
+            },
+            {
+                "value": 21.0,
+                "created_at": "2022-01-01 10:30:00"
+            },
+            {
+                "value": 19.4,
+                "created_at": "2022-01-01 11:00:00"
+            },
+            {
+                "value": 19.5,
+                "created_at": "2022-01-01 11:30:00"
+            },
+            {
+                "value": 23.3,
+                "created_at": "2022-01-01 12:00:00"
+            },
+            {
+                "value": 27.2,
+                "created_at": "2022-01-01 12:30:00"
+            },
+            {
+                "value": 27.6,
+                "created_at": "2022-01-01 13:00:00"
+            },
+            {
+                "value": 27.0,
+                "created_at": "2022-01-01 13:30:00"
+            },
+            {
+                "value": 34.2,
+                "created_at": "2022-01-01 14:00:00"
+            },
+            {
+                "value": 28.7,
+                "created_at": "2022-01-01 14:30:00"
+            },
+            {
+                "value": 42.3,
+                "created_at": "2022-01-01 15:00:00"
+            },
+            {
+                "value": 35.6,
+                "created_at": "2022-01-01 15:30:00"
+            },
+            {
+                "value": 48.7,
+                "created_at": "2022-01-01 16:00:00"
+            },
+            {
+                "value": 54.5,
+                "created_at": "2022-01-01 16:30:00"
+            },
+            {
+                "value": 62.7,
+                "created_at": "2022-01-01 17:00:00"
+            },
+            {
+                "value": 70.2,
+                "created_at": "2022-01-01 17:30:00"
+            },
+            {
+                "value": 107.8,
+                "created_at": "2022-01-01 18:00:00"
+            },
+            {
+                "value": 82.2,
+                "created_at": "2022-01-01 18:30:00"
+            },
+            {
+                "value": 46.5,
+                "created_at": "2022-01-01 19:00:00"
+            },
+            {
+                "value": 37.1,
+                "created_at": "2022-01-01 19:30:00"
+            },
+            {
+                "value": 35.3,
+                "created_at": "2022-01-01 20:00:00"
+            },
+            {
+                "value": 36.1,
+                "created_at": "2022-01-01 20:30:00"
+            },
+            {
+                "value": 35.0,
+                "created_at": "2022-01-01 21:00:00"
+            },
+            {
+                "value": 29.4,
+                "created_at": "2022-01-01 21:30:00"
+            },
+            {
+                "value": 39.2,
+                "created_at": "2022-01-01 22:00:00"
+            },
+            {
+                "value": 26.1,
+                "created_at": "2022-01-01 22:30:00"
+            },
+            {
+                "value": 17.1,
+                "created_at": "2022-01-01 23:00:00"
+            },
+            {
+                "value": 11.8,
+                "created_at": "2022-01-01 23:30:00"
+            },
+            {
+                "value": 8.5,
+                "created_at": "2022-01-02 00:00:00"
+            },
+            {
+                "value": 0.0,
+                "created_at": "2022-01-02 00:30:00"
+            }
+        ]
+    }
+    let seoul_2023 = {
+        "label": "2023",
+        "data": [
+            {
+                "value": 11.6,
+                "created_at": "2023-01-01 05:30:00"
+            },
+            {
+                "value": 11.6,
+                "created_at": "2023-01-01 06:00:00"
+            },
+            {
+                "value": 13.2,
+                "created_at": "2023-01-01 06:30:00"
+            },
+            {
+                "value": 22.9,
+                "created_at": "2023-01-01 07:00:00"
+            },
+            {
+                "value": 38.5,
+                "created_at": "2023-01-01 07:30:00"
+            },
+            {
+                "value": 37.8,
+                "created_at": "2023-01-01 08:00:00"
+            },
+            {
+                "value": 23.4,
+                "created_at": "2023-01-01 08:30:00"
+            },
+            {
+                "value": 24.5,
+                "created_at": "2023-01-01 09:00:00"
+            },
+            {
+                "value": 20.1,
+                "created_at": "2023-01-01 09:30:00"
+            },
+            {
+                "value": 18.9,
+                "created_at": "2023-01-01 10:00:00"
+            },
+            {
+                "value": 19.8,
+                "created_at": "2023-01-01 10:30:00"
+            },
+            {
+                "value": 19.7,
+                "created_at": "2023-01-01 11:00:00"
+            },
+            {
+                "value": 19.6,
+                "created_at": "2023-01-01 11:30:00"
+            },
+            {
+                "value": 23.7,
+                "created_at": "2023-01-01 12:00:00"
+            },
+            {
+                "value": 28.1,
+                "created_at": "2023-01-01 12:30:00"
+            },
+            {
+                "value": 28.4,
+                "created_at": "2023-01-01 13:00:00"
+            },
+            {
+                "value": 27.4,
+                "created_at": "2023-01-01 13:30:00"
+            },
+            {
+                "value": 35.3,
+                "created_at": "2023-01-01 14:00:00"
+            },
+            {
+                "value": 30.0,
+                "created_at": "2023-01-01 14:30:00"
+            },
+            {
+                "value": 44.2,
+                "created_at": "2023-01-01 15:00:00"
+            },
+            {
+                "value": 37.2,
+                "created_at": "2023-01-01 15:30:00"
+            },
+            {
+                "value": 51.3,
+                "created_at": "2023-01-01 16:00:00"
+            },
+            {
+                "value": 56.4,
+                "created_at": "2023-01-01 16:30:00"
+            },
+            {
+                "value": 63.3,
+                "created_at": "2023-01-01 17:00:00"
+            },
+            {
+                "value": 75.7,
+                "created_at": "2023-01-01 17:30:00"
+            },
+            {
+                "value": 109.1,
+                "created_at": "2023-01-01 18:00:00"
+            },
+            {
+                "value": 81.3,
+                "created_at": "2023-01-01 18:30:00"
+            },
+            {
+                "value": 48.0,
+                "created_at": "2023-01-01 19:00:00"
+            },
+            {
+                "value": 39.3,
+                "created_at": "2023-01-01 19:30:00"
+            },
+            {
+                "value": 36.7,
+                "created_at": "2023-01-01 20:00:00"
+            },
+            {
+                "value": 38.1,
+                "created_at": "2023-01-01 20:30:00"
+            },
+            {
+                "value": 35.2,
+                "created_at": "2023-01-01 21:00:00"
+            },
+            {
+                "value": 30.9,
+                "created_at": "2023-01-01 21:30:00"
+            },
+            {
+                "value": 42.4,
+                "created_at": "2023-01-01 22:00:00"
+            },
+            {
+                "value": 29.0,
+                "created_at": "2023-01-01 22:30:00"
+            },
+            {
+                "value": 20.5,
+                "created_at": "2023-01-01 23:00:00"
+            },
+            {
+                "value": 13.3,
+                "created_at": "2023-01-01 23:30:00"
+            },
+            {
+                "value": 5.8,
+                "created_at": "2023-01-02 00:00:00"
+            },
+            {
+                "value": 0.0,
+                "created_at": "2023-01-02 00:30:00"
+            },
+            {
+                "value": 0.0,
+                "created_at": "2023-01-02 01:00:00"
+            }
+        ]
+    }
+
+</script>
+<canvas id="tutorial"></canvas>
+<script>
+    let canvas = document.getElementById("tutorial");
+    let context = canvas.getContext("2d");
+    let rect = canvas.getBoundingClientRect();
+    let num = 1;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerWidth;
+
+    const center = canvas.width / 2;
+    const radius = center * 0.9;
+    const radiusSmall = center * 0.3;
+    const min = 0;
+    const max = 120;
+
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    context.scale(devicePixelRatio, devicePixelRatio);
+
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    const ctx = canvas.getContext("2d");
+    ctx.font = center < 200 ? "10px Arial" : "14px Arial";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    // 그리드 출력
+    for (let i = 0; i < 24; i++) {
+        if (i == 0) {
+            ctx.strokeStyle = '#000000';
+        } else if (i % 3 == 0) {
+            ctx.strokeStyle = '#c5c5c5';
+        } else {
+            ctx.strokeStyle = '#f0f0f0';
+        }
+        ctx.beginPath();
+        const x = Math.cos(Math.PI / 12 * (i - 6));
+        const y = Math.sin(Math.PI / 12 * (i - 6));
+        ctx.lineTo(center + x * radiusSmall, center + y * radiusSmall);
+        ctx.lineTo(center + x * radius, center + y * radius);
+        ctx.stroke();
+        if (i % 3 == 0)
+            if (center < 200)
+                ctx.fillText(i, center + x * (radius + 8), center + y * (radius + 8));
+            else
+                ctx.fillText(i, center + x * (radius + 12), center + y * (radius + 12));
+    }
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    // x/y축 & y축 단위 출력
+    for (let i = 0; i < 6; i++) {
+        if (i == 0 || i == 5)
+            ctx.strokeStyle = '#c5c5c5';
+        else
+            ctx.strokeStyle = '#f0f0f0';
+        ctx.beginPath();
+        ctx.arc(center, center, i * (radius - radiusSmall) / 5 + radiusSmall, 0, Math.PI * 2, true);
+        ctx.stroke();
+        ctx.strokeStyle = '#000000';
+        ctx.beginPath();
+        ctx.lineTo(center, -i * (radius - radiusSmall) / 5 - radiusSmall + center);
+        ctx.lineTo(center - 5, -i * (radius - radiusSmall) / 5 - radiusSmall + center);
+        ctx.stroke();
+        ctx.fillText(Math.floor(i / 5 * (Math.abs(max - min)) + min), center - 10, center - radiusSmall - i * (radius - radiusSmall) / 5);
+    }
+    ctx.lineWidth = 1.5;
+
+    function draw_data(color, data) {
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < data.length - 1; i++) {
+            const date1 = new Date(data[i].created_at);
+            const x1 = date1.getSeconds() + date1.getMinutes() * 60 + date1.getHours() * 3600;
+            const y1 = data[i].value;
+            const date2 = new Date(data[i + 1].created_at);
+            const x2 = date2.getSeconds() + date2.getMinutes() * 60 + date2.getHours() * 3600;
+            const y2 = data[i + 1].value;
+            const v1 = (y1 - min) / (max - min) * (radius - radiusSmall) + radiusSmall;
+            const v2 = (y2 - min) / (max - min) * (radius - radiusSmall) + radiusSmall;
+            // if (date1.getDay()%6!=0)
+            //   continue;
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.lineTo(
+                center + Math.cos(Math.PI / 43200 * (x1 - 3600 * 6)) * v1,
+                center + Math.sin(Math.PI / 43200 * (x1 - 3600 * 6)) * v1
+            );
+            ctx.lineTo(
+                center + Math.cos(Math.PI / 43200 * (x2 - 3600 * 6)) * v2,
+                center + Math.sin(Math.PI / 43200 * (x2 - 3600 * 6)) * v2
+            );
+            ctx.stroke();
+        }
+    }
+
+    draw_data('#ff7f00', seoul_2020.data);
+    draw_data('#ff4500', seoul_2021.data);
+    draw_data('#836fff', seoul_2022.data);
+    draw_data('#00ff7f', seoul_2023.data);
+    // draw_data('#ff7f00', awair_co2.data);
+
+    let start;
+
+    function load_question() {
+        console.log(num);
+        start = Date.now();
+    }
+
+    load_question();
+
+    function put_answer() {
+        const end = Date.now();
+        let answer_num = null;
+
+        const radios = document.getElementsByName('answer');
+        for (let i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                answer_num = i;
+                break;
+            }
+        }
+        if (answer_num == null) {
+            console.log('정답이 입력되지 않았습니다.');
+        } else {
+            console.log((end - start) / 1000, answer_num);
+            // let xhttp = new XMLHttpRequest();
+            // xhttp.onreadystatechange = function() {
+            //   if (this.readyState == 4 && this.status == 200) {
+            //   }
+            // };
+            // xhttp.open("POST", `/api/question/${num}`);
+            // xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            // xhttp.send(JSON.stringify({
+            //   "answer": answer_num,
+            //   "elapsed": (end - start) / 1000
+            // }));
+            num++;
+            load_question();
+        }
+    }
+</script>
+<div style="font-size: 14pt;">
+    <input type="radio" id="1" name="answer" value="1">
+    <label f="4">15-18시</label><br>
+    <input type="radio" id="5" name="answer" value="5">
+    <label for="5">모르겠음</label><br>
+</div>
+<div>
+    <input styleor="1">6-9 시</label><br>
+    <input type="radio" id="2" name="answer" value="2">
+    <label for="2">9-12시</label><br>
+    <input type="radio" id="3" name="answer" value="3">
+    <label for="3">12-15시</label><br>
+    <input type="radio" id="4" name="answer" value="4">
+    <label for="font-size: 24pt;" type="button" onclick="put_answer()" value="다음 문제">
+</div>
+</body>
+</html>
