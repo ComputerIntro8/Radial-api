@@ -28,7 +28,12 @@ public class Question {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String questionText;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "question_time_data_level",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "data_level_id")
+    )
     private List<TimeDataLevel> timeDataLevels;
 
     public Question(String questionText, List<TimeDataLevel> timeDataLevels) {

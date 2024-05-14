@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TimeDataLevelDto {
     private LocalDateTime time;
-    private int dataLevel;
+    private double dataLevel;
 
-    public TimeDataLevelDto(LocalDateTime time, int dataLevel) {
+    public TimeDataLevelDto(LocalDateTime time, double dataLevel) {
         this.time = time;
         this.dataLevel = dataLevel;
     }
