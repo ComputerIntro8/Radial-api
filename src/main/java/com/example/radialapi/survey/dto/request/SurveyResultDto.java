@@ -9,12 +9,15 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SurveyResultDto {
     private String chartType;  // 차트 종류 (radial 또는 line)
-    private int correctAnswers;  // 정답 개수
+    private Long questionId;  // 문제 번호
+    private Long answerId;  // 보기 번호
     private int timeTaken;  // 소요시간
 
-    public SurveyResultDto(String chartType, int correctAnswers, int timeTaken) {
+
+    public SurveyResultDto(String chartType, Long questionId, Long answerId, int timeTaken) {
         this.chartType = chartType;
-        this.correctAnswers = correctAnswers;
+        this.questionId = questionId;
+        this.answerId = answerId;
         this.timeTaken = timeTaken;
     }
 
