@@ -13,6 +13,7 @@ import jakarta.persistence.*;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,17 +28,12 @@ public class Question {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String questionText;
 
-    @Column(nullable = true)
-    private LocalDateTime time; // 시간
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<TimeDataLevel> timeDataLevels;
 
-    @Column(nullable = false)
-    private int dustLevel; // (예시) 미세먼지 농도
-
-    @Builder
-    public Question(String questionText, LocalDateTime time, int dustLevel) {
+    public Question(String questionText, List<TimeDataLevel> timeDataLevels) {
         this.questionText = questionText;
-        this.time = time;
-        this.dustLevel = dustLevel;
+        this.timeDataLevels = timeDataLevels;
     }
 
     public Question(String content) {

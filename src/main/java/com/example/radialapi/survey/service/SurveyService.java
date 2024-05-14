@@ -2,7 +2,8 @@ package com.example.radialapi.survey.service;
 
 import com.example.radialapi.survey.domain.Answer;
 import com.example.radialapi.survey.domain.Question;
-import com.example.radialapi.survey.dto.response.AnswerDto;
+import com.example.radialapi.survey.dto.TimeDataLevelDto;
+import com.example.radialapi.survey.dto.AnswerDto;
 import com.example.radialapi.survey.repository.AnswerRepository;
 import com.example.radialapi.survey.repository.QuestionRepository;
 import com.example.radialapi.survey.dto.response.AnswerQuestionDto;
@@ -37,18 +38,28 @@ public class SurveyService {
         // 해당 문제의 답변 가져오기
         List<Answer> answers = answerRepository.findByQuestionId(question);
         answers.forEach(answer -> log.info(answer.toString())); // 각 Answer 객체의 toString() 결과를 로그로 출력
-        // AnswerQuestionDto에 답변과 질문 정보 매핑하여 반환
+
+        // question의 TimeDataLevels를 TimeDataLevelDto 리스트로 변환
+        List<TimeDataLevelDto> timeDataLevelDtos = question.getTimeDataLevels().stream()
+                .map(tdl ->
+                        new TimeDataLevelDto(tdl.getTime(), tdl.getDataLevel()))
+                /*
+                    TimeDataLevelDto dto = new TimeDataLevelDto(tdl.getTime(), tdl.getDataLevel());
+                    System.out.println("After mapping: Time = " + dto.getTime() + ", DataLevel = " + dto.getDataLevel());
+                    return dto;
+                */
+                .collect(Collectors.toList());
+
+
+        // AnswerQuestionDto에 답변과 질문 정보 및 시간-미세먼지 레벨 정보 매핑하여 반환
         return new AnswerQuestionDto(
                 question.getId(),
                 question.getQuestionText(),
                 answers.stream()
                         .map(answer -> new AnswerDto(answer))
                         .collect(Collectors.toList()),
-                question.getTime(),
-                question.getDustLevel()
+                timeDataLevelDtos
         );
-
-
     }
 
 }

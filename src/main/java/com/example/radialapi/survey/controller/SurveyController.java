@@ -3,6 +3,7 @@ package com.example.radialapi.survey.controller;
 import com.example.radialapi.survey.domain.SurveyResult;
 import com.example.radialapi.survey.dto.request.SurveyResultDto;
 import com.example.radialapi.survey.dto.response.AnswerQuestionDto;
+import com.example.radialapi.survey.dto.response.SurveyResultResponseDto;
 import com.example.radialapi.survey.service.SurveyResultService;
 import com.example.radialapi.survey.service.SurveyService;
 import com.example.radialapi.user.domain.User;
@@ -35,12 +36,13 @@ public class SurveyController {
     }
 
     // 문제 끝 -> 제출 POST 요청 ( survey DB, user DB 저장 )
-    @Operation(summary = "설문결과 저장", description = "차트 종류별 시간, 정답 개수 등등 저장")
+    @Operation(summary = "설문결과 저장", description = "전체 설문에 대한 결과 저장")
     @PostMapping("/save/{userId}")
-    public ResponseEntity<?> saveSurveyResult(@PathVariable Long userId, @RequestBody SurveyResultDto surveyResultDto) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        SurveyResult surveyResult = surveyResultService.createSurveyResultFromDto(surveyResultDto, user);
-        surveyResultService.saveSurveyResult(surveyResult);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SurveyResultResponseDto> saveSurveyResults(@PathVariable Long userId, @RequestBody List<SurveyResultDto> surveyResultsDtos) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        SurveyResultResponseDto responseDto =  surveyResultService.saveSurveyResults(user, surveyResultsDtos);
+        return ResponseEntity.ok(responseDto);
     }
+
 }

@@ -23,7 +23,7 @@ public class Answer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    private Question questionId;
+    private Question questionId; // question이라고 하니깐 에러뜸 왜지
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String answerText;
