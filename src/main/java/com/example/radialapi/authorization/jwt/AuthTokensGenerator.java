@@ -29,7 +29,7 @@ public class AuthTokensGenerator {
         String accessTokenJWT = jwtProvider.generate(subject, accessTokenExpiredAt);
         String refreshToken = jwtProvider.generate(subject, refreshTokenExpiredAt);
         // 생성된 토큰들과 추가 정보를 함께 반환
-        return AuthTokens.of(accessTokenJWT, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+        return AuthTokens.of(accessTokenJWT, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L, memberId);
     }
 
     // 주어진 접근 토큰에서 사용자 ID를 추출
