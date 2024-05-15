@@ -45,6 +45,13 @@ public class SurveyResultService {
                     radialTimeTaken += dto.getTimeTaken();
                 }
             }
+            else{
+                if ("line".equalsIgnoreCase(dto.getChartType())) {
+                    lineTimeTaken += dto.getTimeTaken();
+                } else if ("radial".equalsIgnoreCase(dto.getChartType())) {
+                    radialTimeTaken += dto.getTimeTaken();
+                }
+            }
         }
 
         SurveyResult surveyResult = SurveyResult.builder()
