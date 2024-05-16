@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그래프 이해도 설문조사</title>
+    <script src="seoul_2020.json"></script>
+    <script src="seoul_2021.json"></script>
+    <script src="seoul_2022.json"></script>
+    <script src="seoul_2023.json"></script>
+    <script src="awair_co2.json"></script>
+    <script type="text/javascript">
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++)
+            {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam)
+                {
+                    return sParameterName[1];
+                }
+            }
+        }
+        const userId = GetURLParameter('userId');
+    </script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vw;
+        }
+    </style>
+</head>
+<body>
+<body class="vsc-initialized"><br>
+<div style="font-size: 14pt;" id="question_text">
+    질문 1. 다음 그래프는 서울역의 평일 지하철 혼잡도 그래프 입니다. 가장 많은 배차가 필요한 시간대는 언제 입니까?
+</div>
+<div>
+    <canvas id="tutorial">
+        <script>
+            let canvas = document.getElementById("tutorial");
+            let context = canvas.getContext("2d");
+            let rect = canvas.getBoundingClientRect();
+            let num = 1;
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerWidth;
+            const width = canvas.width;
+            const height = canvas.height;
+            const center = width / 2;
+            const radius = center * 0.9;
+            const radiusSmall = center * 0.3;
+            const min = 0;
+            const max = 3000;
+            const answers = [];
+            const question_size = 4;
+
+            // line chart에서 사용
+            let x_start = new Date(awair_co2.data[0].created_at).getTime();
+            let x_end = new Date(awair_co2.data[awair_co2.data.length - 1].created_at).getTime();
+
+            canvas.width = rect.width * devicePixelRatio;
+            canvas.height = rect.height * devicePixelRatio;
+            context.scale(devicePixelRatio, devicePixelRatio);
+
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            const ctx = canvas.getContext("2d");
+            ctx.font = center < 200 ? "10px Arial" : "14px Arial";
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            function draw_radial_data(color, data) {
+              ctx.lineWidth = 1.5;
+              ctx.strokeStyle = color;
+              for (let i = 0; i < data.length - 1; i++) {
+                const date1 = new Date(data[i].created_at);
+                const x1 = date1.getSeconds() + date1.getMinutes() * 60 + date1.getHours() * 3600;
+                const y1 = data[i].value;
+                const date2 = new Date(data[i + 1].created_at);
+                const x2 = date2.getSeconds() + date2.getMinutes() * 60 + date2.getHours() * 3600;
+                const y2 = data[i + 1].value;
+                const v1 = (y1 - min) / (max - min) * (radius - radiusSmall) + radiusSmall;
+                const v2 = (y2 - min) / (max - min) * (radius - radiusSmall) + radiusSmall;
+                ctx.beginPath();
+                ctx.lineTo(
+                  center + Math.cos(Math.PI / 43200 * (x1 - 3600 * 6)) * v1,
+                  center + Math.sin(Math.PI / 43200 * (x1 - 3600 * 6)) * v1
+                  );
+                ctx.lineTo(
+                  center + Math.cos(Math.PI / 43200 * (x2 - 3600 * 6)) * v2,
+                  center + Math.sin(Math.PI / 43200 * (x2 - 3600 * 6)) * v2
+                  );
+                ctx.stroke();
+              }
+            }
+            function draw_line_data(color, data) {
+              ctx.lineWidth = 1.5;
+              ctx.strokeStyle = color;
+              for (let i = 0; i < data.length - 1; i++) {
+                const date1 = new Date(data[i].created_at);
+                const x1 = (date1.getTime() - x_start) / (x_end - x_start) * (width - 100);
+                const y1 = data[i].value / (max - min) * (height - 100);
+                const date2 = new Date(data[i + 1].created_at);
+                const x2 = (date2.getTime() - x_start) / (x_end - x_start) * (width - 100);
+                const y2 = data[i + 1].value / (max - min) * (height - 100);
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.lineTo(x1 + 50, height - 50 - y1);
+                ctx.lineTo(x2 + 50, height - 50 - y2);
+                ctx.stroke();
+              }
+            }
+            function draw_radial_plot() {
+              // 그리드 출력
+              for (let i = 0; i < 24; i++) {
+                if (i == 0) {
+                  ctx.strokeStyle = '#000000';
+                } else if (i % 3 == 0) {
+                  ctx.strokeStyle = '#c5c5c5';
+                } else {
+                  ctx.strokeStyle = '#f0f0f0';
+                }
+                ctx.beginPath();
+                const x = Math.cos(Math.PI / 12 * (i - 6));
+                const y = Math.sin(Math.PI / 12 * (i - 6));
+                ctx.lineTo(center + x * radiusSmall, center + y * radiusSmall);
+                ctx.lineTo(center + x * radius, center + y * radius);
+                ctx.stroke();
+                if (i % 3 == 0)
+                  if (center < 200)
+                    ctx.fillText(i, center + x * (radius + 8), center + y * (radius + 8));
+                  else
+                  ctx.fillText(i, center + x * (radius + 12), center + y * (radius + 12));
+              }
+              ctx.textAlign = 'right';
+              ctx.textBaseline = 'middle';
+              // x/y축 & y축 단위 출력
+              for (let i = 0; i < 6; i++) {
+                if (i == 0 || i == 5)
+                  ctx.strokeStyle = '#c5c5c5';
+                else
+                  ctx.strokeStyle = '#f0f0f0';
+                ctx.beginPath();
+                ctx.arc(center, center, i * (radius - radiusSmall) / 5 + radiusSmall, 0, Math.PI * 2, true);
+                ctx.stroke();
+                ctx.strokeStyle = '#000000';
+                ctx.beginPath();
+                ctx.lineTo(center, -i * (radius - radiusSmall) / 5 - radiusSmall + center);
+                ctx.lineTo(center - 5, -i * (radius - radiusSmall) / 5 - radiusSmall + center);
+                ctx.stroke();
+                ctx.fillText(Math.floor(i / 5 * (Math.abs(max - min)) + min), center - 10, center - radiusSmall - i * (radius - radiusSmall) / 5);
+              }
+              ctx.lineWidth = 1.5;
+            }
+            function draw_line_plot() {
+              ctx.strokeStyle = '#c5c5c5';
+              // x/y축 & y축 단위 출력
+
+              ctx.textAlign = 'right';
+              for (let i = 0; i < 6; i++) {
+                const y = height - 50 - (i * (height - 100) / 5);
+                ctx.beginPath();
+                ctx.lineTo(50, y);
+                ctx.lineTo(width - 50, y);
+                ctx.stroke();
+                ctx.fillText(Math.floor(i / 5 * (Math.abs(max - min)) + min), 45, y);
+              }
+              ctx.textAlign = 'center';
+              for (let i = 0; i < 6; i++) {
+                const x = 50 + (i * (width - 100) / 5);
+                const cur = new Date(x_start + i * (x_end - x_start) / 5);
+                const month = `0${cur.getMonth()}`.slice(-2);
+                const day = `0${cur.getDay()}`.slice(-2);
+                const hours = `0${cur.getHours()}`.slice(-2);
+                const minute = `0${cur.getMinutes()}`.slice(-2);
+                ctx.beginPath();
+                ctx.lineTo(x, 50);
+                ctx.lineTo(x, width - 50);
+                ctx.stroke();
+                ctx.save();
+                ctx.fillText(`${month}-${day} ${hours}:${minute}`, x, height - 35);
+              }
+            }
+            // draw_radial_plot();
+            // draw_radial_data('#ff7f00', seoul_2020.data);
+            // draw_radial_data('#ff4500', seoul_2021.data);
+            // draw_radial_data('#836fff', seoul_2022.data);
+            // draw_radial_data('#00ff7f', seoul_2023.data);
+            draw_line_plot();
+            draw_line_data('#ff7f00', awair_co2.data);
+
+            let start;
+
+            function load_question() {
+              console.log(num);
+              start = Date.now();
+            }
+            load_question();
+
+            function put_answer() {
+              const end = Date.now();
+              let answer_num = null;
+
+              const radios = document.getElementsByName('answer');
+              for (let i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                  radios[i].checked = false;
+                  answer_num = i;
+                  break;
+                }
+              }
+              if (answer_num == null) {
+                console.log('정답이 입력되지 않았습니다.');
+              } else if (num == question_size) {
+                answers.push({
+                  chartType: "radial",
+                  questionId: num,
+                  answerId: answer_num + 1 + (num - 1) * 4,
+                  timeTaken: end - start
+                });
+                console.log(answers);
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                  }
+                };
+                xhttp.open("POST", `/api/survey/save/${userId}`)
+                xhttp.withCredentials = true;;
+                xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.send(JSON.stringify(answers));
+              }
+              else {
+                console.log((end - start) / 1000, answer_num);
+                answers.push({
+                  chartType: "radial",
+                  questionId: num,
+                  answerId: answer_num + 1 + (num - 1) * 4,
+                  timeTaken: end - start
+                });
+                num++;
+                if (num == question_size) {
+                  console.log('ee');
+                  document.querySelector('#answer_btn').value = '제출';
+                }
+                load_question();
+              }
+            }
+        </script>
+</div>
+<br>
+<div style="font-size: 14pt;">
+    <input type="radio" id="1" name="answer" value="1">
+    <label for="1">6-9 시</label><br>
+    <input type="radio" id="2" name="answer" value="2">
+    <label for="2">9-12시</label><br>
+    <input type="radio" id="3" name="answer" value="3">
+    <label for="3">12-15시</label><br>
+    <input type="radio" id="4" name="answer" value="4">
+    <label for="4">15-18시</label><br>
+    <input type="radio" id="5" name="answer" value="5">
+    <label for="5">모르겠음</label><br>
+    <!-- <input type="range" min="1" max="100" value="50" class="slider" id="myRange" onchange="inputChange();"> -->
+</div>
+<!-- <p style="font-size: 24pt;">시간: <span id="value"> 2024-04-21 16:30</span></p> -->
+<div>
+    <input style="font-size: 24pt; width: 150px;" id="answer_btn" type="button" onclick="put_answer()" value="다음 문제">
+</div>
+</body>
+</html>

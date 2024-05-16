@@ -23,7 +23,7 @@ public class LoginController {
         try {
             AuthTokens tokens = loginService.socialLogin(registrationId, code);
             long userId = tokens.getUserId();  // 밑에 리디렉션 uri 바꿔야함
-            String redirectUrl = "https://radial-app.com/login-success?userId=" + userId;
+            String redirectUrl = "/survey.html?userId=" + userId;
             // 리디렉션 응답 생성
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(new URI(redirectUrl));
