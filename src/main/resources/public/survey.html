@@ -10,7 +10,7 @@
     <script src="seoul_2023.json"></script>
     <script src="awair_co2.json"></script>
     <script type="text/javascript">
-        function GetURLParameter(sParam) {
+        function getURLParameter(sParam) {
             var sPageURL = window.location.search.substring(1);
             var sURLVariables = sPageURL.split('&');
             for (var i = 0; i < sURLVariables.length; i++)
@@ -22,7 +22,18 @@
                 }
             }
         }
-        const userId = GetURLParameter('userId');
+        function getSurveyStatus(userId) {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 409) {
+                location.href='/complete.html';
+              }
+            };
+            xhttp.open("GET", `/api/survey/${userId}`);
+            xhttp.send();
+        }
+        const userId = getURLParameter('userId');
+        getSurveyStatus(userId);
     </script>
     <style>
         html, body {
@@ -231,6 +242,7 @@
                 let xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
+                    location.href='/complete.html';
                   }
                 };
                 xhttp.open("POST", `/api/survey/save/${userId}`)
