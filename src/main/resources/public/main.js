@@ -264,27 +264,43 @@ function init_canvas(question) {
       ctx.fillText(Math.floor(i / 5 * (Math.abs(max - min)) + min), 45, y);
     }
     ctx.textAlign = 'center';
-    let step = 6;
-    for (let i = 0; i < step; i++) {
-      const x = 50 + (i * (width - 100) / 5);
-      const cur = new Date(x_start + i * (x_end - x_start) / 5);
-      const month = `0${cur.getMonth() + 1}`.slice(-2);
-      const day = `0${cur.getDate()}`.slice(-2);
-      const hours = `0${cur.getHours()}`.slice(-2);
-      const minute = `0${cur.getMinutes()}`.slice(-2);
-      ctx.beginPath();
-      ctx.lineTo(x, 50);
-      ctx.lineTo(x, width - 50);
-      ctx.stroke();
-      ctx.save();
-      if (num == 9) 
-        ctx.fillText(`${month}월`, x, height - 35);
-      else if (num == 7)
-        ctx.fillText(`${month}월`, x, height - 35);
-      else if (num == 3)
+    if (num == 9 || num == 7) {
+      for (let i = 0; i < 12; i++) {
+        const x = 50 + (i * (width - 100) / (12 - 1));
+        ctx.beginPath();
+        ctx.lineTo(x, 50);
+        ctx.lineTo(x, width - 50);
+        ctx.stroke();
+        ctx.save();
+        ctx.fillText(`${i+1}월`, x, height - 35);
+       }
+    }
+    else if (num == 3) {
+      for (let i = 0; i < 6; i++) {
+        const x = 50 + (i * (width - 100) / (6 - 1));
+        const cur = new Date(x_start + i * (x_end - x_start) / (6 - 1));
+        const day = cur.getDate();
+        ctx.beginPath();
+        ctx.lineTo(x, 50);
+        ctx.lineTo(x, width - 50);
+        ctx.stroke();
+        ctx.save();
         ctx.fillText(`${day}일`, x, height - 35);
-      else
+      }
+    }
+    else {
+      for (let i = 0; i < 6; i++) {
+        const x = 50 + (i * (width - 100) / (6 - 1));
+        const cur = new Date(x_start + i * (x_end - x_start) / (6 - 1));
+        const hours = `0${cur.getHours()}`.slice(-2);
+        const minute = `0${cur.getMinutes()}`.slice(-2);
+        ctx.beginPath();
+        ctx.lineTo(x, 50);
+        ctx.lineTo(x, width - 50);
+        ctx.stroke();
+        ctx.save();
         ctx.fillText(`${hours}:${minute}`, x, height - 35);
+       }
     }
     draw_line_data('#ff7f00', question.data);
   } else if (question.plot_type === 'radial') {
@@ -347,7 +363,7 @@ function init_canvas(question) {
       for (let i = 0; i < 12; i++) {
         if (i == 0) {
           ctx.strokeStyle = '#000000';
-        } else if (i % 3 == 0) {
+        } else if (i % 2 == 0) {
           ctx.strokeStyle = '#c5c5c5';
         } else {
           ctx.strokeStyle = '#f0f0f0';
@@ -363,11 +379,11 @@ function init_canvas(question) {
             ctx.fillText(`${i + 1} 월`, center + x * (radius + 8), center + y * (radius + 8));
           else
             ctx.fillText(`${i + 1} 월`, center + x * (radius + 12), center + y * (radius + 12));
-        else if (i % 3 == 0)
+        else if (i % 2 == 0)
           if (center < 200)
-            ctx.fillText(i, center + x * (radius + 8), center + y * (radius + 8));
+            ctx.fillText(i + 1, center + x * (radius + 8), center + y * (radius + 8));
           else
-            ctx.fillText(i, center + x * (radius + 12), center + y * (radius + 12));
+            ctx.fillText(i + 1, center + x * (radius + 12), center + y * (radius + 12));
       }
     }
     ctx.textAlign = 'right';
