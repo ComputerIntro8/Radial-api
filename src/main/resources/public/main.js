@@ -19,7 +19,7 @@ function getSurveyStatus(userId) {
       console.log(resp);
     }
   };
-  xhttp.open("GET", `/api/survey/${userId}`);
+  xhttp.open("GET", `/api/survey/${userId}`, false);
   xhttp.send();
 }
 const userId = getURLParameter('userId');
@@ -448,7 +448,7 @@ function put_answer() {
   else {
     console.log((end - start) / 1000, answer_num);
     answers.push({
-      chartType: "radial",
+      chartType: questions_meta[num].plot_type,
       questionId: num,
       answerId: answer_num,
       timeTaken: end - start
