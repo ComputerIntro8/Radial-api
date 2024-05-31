@@ -1,5 +1,11 @@
 # radial-api
 
+배포 주소 
+http://ec2-52-78-164-62.ap-northeast-2.compute.amazonaws.com:8080/
+위 링크를 통해 설문 프로그램에 접속할 수 있습니다.
+
+
+
 ## commit message
 
 - feat : 새로운 기능 추가, 기존의 기능을 요구 사항에 맞추어 수정
