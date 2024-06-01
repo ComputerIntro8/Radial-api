@@ -1,9 +1,12 @@
 # radial-api
 
-배포 주소 
-http://ec2-52-78-164-62.ap-northeast-2.compute.amazonaws.com:8080/
+## 배포 주소   
+http://ec2-52-78-164-62.ap-northeast-2.compute.amazonaws.com:8080/  
 링크를 통해 설문 프로그램에 접속할 수 있습니다.
 
+## 주의사항  
+모바일 환경을 대상으로 개발되었기 떄문에 F12 > Responsive 화면 비율을 켜 놓은 후 접속하거나
+모바일 인터넷을 통해서 접속해야만 합니다.
 
 
 ## commit message
